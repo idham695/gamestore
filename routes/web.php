@@ -63,10 +63,10 @@ $router->group(['middleware' => ['auth']],  function ($router){
     $router->get('product/{id}', 'ProductController@show');
     $router->get('product/image/{imageName}', 'ProductController@getImage');
     $router->put('product/{id}', 'ProductController@update');
-$router->delete('product/{id}', 'ProductController@destroy');
+    $router->delete('product/{id}', 'ProductController@destroy');
 
-//Troli
-$router->get('troli', 'TroliController@index');
-$router->put('troli', 'TroliController@update');
-$router->delete('troli/product/{id_produk}', 'TroliController@deleteProduct');
-});
+    //Troli
+    $router->get('troli', 'TroliController@index');
+    $router->put('troli', 'TroliController@update');
+    $router->delete('troli/product/{id_produk}', 'TroliController@deleteProduct');
+    });

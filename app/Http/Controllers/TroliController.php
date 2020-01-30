@@ -6,9 +6,18 @@ use App\Model\Troli;
 use App\Model\TroliProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class TroliController extends Controller {
     public function index() {
+        if(Gate::denies('pelanggan')){
+            return response()->json([
+                'success' => false,
+                'status'=>403,
+                'message' => 'You are unauthorized'
+
+            ],403);
+        }
         $troli = Troli::where('checkedout',false)->where('id_user', Auth::user()->id)->with('products')->first();
         if (!$troli) {
             $troli=new Troli;
@@ -37,6 +46,14 @@ class TroliController extends Controller {
 
     public function update(Request $request)
     {
+        if(Gate::denies('pelanggan')){
+            return response()->json([
+                'success' => false,
+                'status'=>403,
+                'message' => 'You are unauthorized'
+
+            ],403);
+        }
         $this->validate($request, [
             'id_produk' => 'required|exists:product,id',
             'jumlah_produk' => 'required|min:1'
@@ -60,6 +77,14 @@ class TroliController extends Controller {
     }
     
     public function deleteProduct($id_produk){
+        if(Gate::denies('pelanggan')){
+            return response()->json([
+                'success' => false,
+                'status'=>403,
+                'message' => 'You are unauthorized'
+
+            ],403);
+        }
         $troli = Troli::where('checkedout',false)->where('id_user', Auth::user()->id)->with('products')->first();
         
         if (!$troli) {

@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Model\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller {
     public function index() {
         $user = User::OrderBy("id", "DESC")->paginate(10);
-        if(Gate::denies('admin', $user)){
+        if(Gate::denies('admin')){
             return response()->json([
                 'success' => false,
                 'status'=>403,
@@ -99,7 +100,7 @@ class UserController extends Controller {
         if(!$user){
             abort(404);
         }
-        if(Gate::denies('admin', $user)){
+        if(Gate::denies('admin')){
             return response()->json([
                 'success' => false,
                 'status'=>403,
@@ -164,7 +165,7 @@ class UserController extends Controller {
         if(!$user){
             abort(404);
         }
-        if(Gate::denies('admin', $user)){
+        if(Gate::denies('admin')){
             return response()->json([
                 'success' => false,
                 'status'=>403,

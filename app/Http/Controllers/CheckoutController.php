@@ -6,11 +6,12 @@ use App\Model\Checkout;
 use App\Model\Troli;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class CheckoutController extends Controller {
     public function index() {
         $checkout = Checkout::where('id_user', Auth::user()->id)->with('troli.products','ekspedisi','pembayaran')->paginate(2);
-        if(Gate::denies('admin', $checkout)){
+        if(Gate::denies('admin')){
             return response()->json([
                 'success' => false,
                 'status'=>403,
@@ -21,6 +22,14 @@ class CheckoutController extends Controller {
         return response()->json($checkout, 200);
     }
     public function store(Request $request){
+        if(Gate::denies('pelanggan')){
+            return response()->json([
+                'success' => false,
+                'status'=>403,
+                'message' => 'You are unauthorized'
+
+            ],403);
+        }
         $this->validate($request, [
             'id_pembayaran' => 'required',
             'id_ekspedisi' => 'required',
@@ -56,7 +65,7 @@ class CheckoutController extends Controller {
         if(!$chekout){
             abort(404);
         }
-        if(Gate::denies('admin', $checkout)){
+        if(Gate::denies('admin')){
             return response()->json([
                 'success' => false,
                 'status'=>403,

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Model\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller {
     public function index() {
@@ -18,7 +20,7 @@ class ProductController extends Controller {
     }
     public function store(Request $request){
         $input = $request->all();
-        if(Gate::denies('admin', $product)){
+        if(Gate::denies('admin')){
             return response()->json([
                 'success' => false,
                 'status'=>403,
@@ -82,7 +84,7 @@ class ProductController extends Controller {
     public function update(Request $request, $id)
     {
         $input = $request->all();
-        if(Gate::denies('admin', $product)){
+        if(Gate::denies('admin')){
             return response()->json([
                 'success' => false,
                 'status'=>403,
@@ -137,7 +139,7 @@ class ProductController extends Controller {
         if(!$product){
             abort(404);
         }
-        if(Gate::denies('admin', $product)){
+        if(Gate::denies('admin')){
             return response()->json([
                 'success' => false,
                 'status'=>403,

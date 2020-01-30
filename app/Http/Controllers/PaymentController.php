@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Model\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class PaymentController extends Controller {
     public function index() {
@@ -18,7 +20,7 @@ class PaymentController extends Controller {
     }
     public function store(Request $request){
         $input = $request->all();
-        if(Gate::denies('admin', $payment)){
+        if(Gate::denies('admin')){
             return response()->json([
                 'success' => false,
                 'status'=>403,
@@ -59,7 +61,7 @@ class PaymentController extends Controller {
         if (!$payment) {
             abort(404);
         }
-        if(Gate::denies('admin', $payment)){
+        if(Gate::denies('admin')){
             return response()->json([
                 'success' => false,
                 'status'=>403,
@@ -90,7 +92,7 @@ class PaymentController extends Controller {
         if(!$payment){
             abort(404);
         }
-        if(Gate::denies('admin', $payment)){
+        if(Gate::denies('admin')){
             return response()->json([
                 'success' => false,
                 'status'=>403,
