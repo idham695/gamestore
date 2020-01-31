@@ -34,16 +34,6 @@ class TroliController extends Controller {
         return response()->json($troli, 200);
     }
 
-    public function show($id){
-        $product = Troli::find($id);
-
-        if(!$product){
-            abort(404);
-        }
-
-        return response()->json($product, 200);
-    }
-
     public function update(Request $request)
     {
         if(Gate::denies('pelanggan')){

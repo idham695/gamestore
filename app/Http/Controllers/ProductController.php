@@ -149,7 +149,7 @@ class ProductController extends Controller {
         }
 
         $product->delete();
-        $message = ['message' => 'deleted successfully', 'category_id' => $id];
+        $message = ['message' => 'deleted successfully', 'product_id' => $id];
 
         return response()->json($message, 200);
     }
