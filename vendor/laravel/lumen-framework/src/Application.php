@@ -140,7 +140,7 @@ class Application extends Container
      */
     public function version()
     {
-        return 'Lumen (6.1.0) (Laravel Components ^6.0)';
+        return 'Lumen (6.3.2) (Laravel Components ^6.0)';
     }
 
     /**
@@ -364,6 +364,8 @@ class Application extends Container
     protected function registerDatabaseBindings()
     {
         $this->singleton('db', function () {
+            $this->configure('app');
+
             return $this->loadComponent(
                 'database', [
                     'Illuminate\Database\DatabaseServiceProvider',
@@ -672,7 +674,7 @@ class Application extends Container
      * Register the facades for the application.
      *
      * @param  bool  $aliases
-     * @param  array $userAliases
+     * @param  array  $userAliases
      * @return void
      */
     public function withFacades($aliases = true, $userAliases = [])
@@ -855,7 +857,7 @@ class Application extends Container
      */
     public function runningInConsole()
     {
-        return php_sapi_name() === 'cli' || php_sapi_name() === 'phpdbg';
+        return \PHP_SAPI === 'cli' || \PHP_SAPI === 'phpdbg';
     }
 
     /**
@@ -939,6 +941,39 @@ class Application extends Container
     }
 
     /**
+     * Get the current application locale.
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this['config']->get('app.locale');
+    }
+
+    /**
+     * Set the current application locale.
+     *
+     * @param  string  $locale
+     * @return void
+     */
+    public function setLocale($locale)
+    {
+        $this['config']->set('app.locale', $locale);
+        $this['translator']->setLocale($locale);
+    }
+
+    /**
+     * Determine if application locale is the given locale.
+     *
+     * @param  string  $locale
+     * @return bool
+     */
+    public function isLocale($locale)
+    {
+        return $this->getLocale() == $locale;
+    }
+
+    /**
      * Register the core container aliases.
      *
      * @return void
@@ -965,6 +1000,10 @@ class Application extends Container
             'log' => 'Psr\Log\LoggerInterface',
             'Illuminate\Contracts\Queue\Factory' => 'queue',
             'Illuminate\Contracts\Queue\Queue' => 'queue.connection',
+            'Illuminate\Redis\RedisManager' => 'redis',
+            'Illuminate\Contracts\Redis\Factory' => 'redis',
+            'Illuminate\Redis\Connections\Connection' => 'redis.connection',
+            'Illuminate\Contracts\Redis\Connection' => 'redis.connection',
             'request' => 'Illuminate\Http\Request',
             'Laravel\Lumen\Routing\Router' => 'router',
             'Illuminate\Contracts\Translation\Translator' => 'translator',
