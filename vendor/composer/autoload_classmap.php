@@ -30,6 +30,7 @@ return array(
     'App\\Model\\Pengiriman' => $baseDir . '/app/Model/Pengiriman.php',
     'App\\Model\\Product' => $baseDir . '/app/Model/Product.php',
     'App\\Model\\Troli' => $baseDir . '/app/Model/Troli.php',
+    'App\\Model\\TroliProduct' => $baseDir . '/app/Model/TroliProduct.php',
     'App\\Model\\User' => $baseDir . '/app/Model/User.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',
